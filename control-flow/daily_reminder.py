@@ -21,6 +21,6 @@ if time_bound == "yes":
     reminder += " It requires immediate attention today!"
 
 # Output the customized reminder
-print("\nReminder:")
+print("Reminder:")
 print(reminder)
 
