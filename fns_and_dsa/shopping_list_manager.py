@@ -1,5 +1,5 @@
 def display_menu():
-    print("\nShopping List Manager")
+    print("Shopping List Manager")  # Ensure this line is present
     print("1. Add Item")
     print("2. Remove Item")
     print("3. View List")
@@ -46,3 +46,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
