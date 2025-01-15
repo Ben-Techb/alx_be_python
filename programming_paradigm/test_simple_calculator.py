@@ -1,61 +1,65 @@
-class Book:
-    def __init__(self, title, author):
-        self.title = title
-        self.author = author
-        self._is_checked_out = False
+import unittest
+from simple_calculator import SimpleCalculator
 
-    def check_out(self):
-        """Marks the book as checked out if it is available."""
-        if not self._is_checked_out:
-            self._is_checked_out = True
-            return True
-        return False
+class TestSimpleCalculator(unittest.TestCase):
 
-    def return_book(self):
-        """Marks the book as available."""
-        self._is_checked_out = False
+    def setUp(self):
+        """Set up the SimpleCalculator instance before each test."""
+        self.calc = SimpleCalculator()
 
-    def is_available(self):
-        """Checks if the book is available."""
-        return not self._is_checked_out
+    def test_addition(self):
+        """Test the add method."""
+        # Basic addition
+        self.assertEqual(self.calc.add(2, 3), 5)
+        self.assertEqual(self.calc.add(-1, 1), 0)
+        self.assertEqual(self.calc.add(0, 0), 0)
+        # Floating-point addition
+        self.assertAlmostEqual(self.calc.add(2.5, 3.2), 5.7)
+        # Large numbers
+        self.assertEqual(self.calc.add(1e9, 1e9), 2e9)
 
+    def test_subtraction(self):
+        """Test the subtract method."""
+        # Basic subtraction
+        self.assertEqual(self.calc.subtract(5, 3), 2)
+        self.assertEqual(self.calc.subtract(-1, 1), -2)
+        self.assertEqual(self.calc.subtract(0, 0), 0)
+        # Floating-point subtraction
+        self.assertAlmostEqual(self.calc.subtract(5.5, 2.2), 3.3)
+        # Large numbers
+        self.assertEqual(self.calc.subtract(1e9, 1e8), 9e8)
 
-class Library:
-    def __init__(self):
-        self._books = []
+    def test_multiplication(self):
+        """Test the multiply method."""
+        # Basic multiplication
+        self.assertEqual(self.calc.multiply(2, 3), 6)
+        self.assertEqual(self.calc.multiply(-2, 3), -6)
+        self.assertEqual(self.calc.multiply(0, 3), 0)
+        # Floating-point multiplication
+        self.assertAlmostEqual(self.calc.multiply(2.5, 3.2), 8.0)
+        # Large numbers
+        self.assertEqual(self.calc.multiply(1e6, 1e6), 1e12)
 
-    def add_book(self, book):
-        """Adds a book to the library's collection."""
-        if isinstance(book, Book):
-            self._books.append(book)
+    def test_division(self):
+        """Test the divide method."""
+        # Basic division
+        self.assertEqual(self.calc.divide(6, 3), 2)
+        self.assertEqual(self.calc.divide(-6, 3), -2)
+        self.assertEqual(self.calc.divide(0, 3), 0)
+        # Floating-point division
+        self.assertAlmostEqual(self.calc.divide(7.5, 2.5), 3.0)
+        # Division by zero
+        self.assertIsNone(self.calc.divide(6, 0))
 
-    def check_out_book(self, title):
-        """Checks out a book by its title."""
-        for book in self._books:
-            if book.title == title:
-                if book.check_out():
-                    print(f"'{title}' has been checked out.")
-                    return
-                else:
-                    print(f"'{title}' is already checked out.")
-                    return
-        print(f"'{title}' is not in the library.")
+    def test_edge_cases(self):
+        """Test additional edge cases."""
+        # Very large numbers
+        self.assertEqual(self.calc.add(1e12, 1e12), 2e12)
+        self.assertEqual(self.calc.multiply(1e6, 1e6), 1e12)
+        # Very small numbers
+        self.assertAlmostEqual(self.calc.add(1e-10, 1e-10), 2e-10)
+        self.assertAlmostEqual(self.calc.divide(1e-10, 1e-5), 1e-5)
 
-    def return_book(self, title):
-        """Returns a book to the library by its title."""
-        for book in self._books:
-            if book.title == title:
-                book.return_book()
-                print(f"'{title}' has been returned.")
-                return
-        print(f"'{title}' is not in the library.")
-
-    def list_available_books(self):
-        """Lists all available books in the library."""
-        available_books = [book for book in self._books if book.is_available()]
-        if available_books:
-            for book in available_books:
-                print(f"{book.title} by {book.author}")
-        else:
-            print("No books are currently available.")
+if __name__ == "__main__":
+    unittest.main()
 
